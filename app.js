@@ -6,7 +6,8 @@ var express = require('express')
   , routes = require('./routes')
   , mypeople = require('./routes/mypeople')
   , http = require('http')
-  , path = require('path');
+  , path = require('path')
+  , socket = require('./socket');
 
 var app = express();
 
@@ -36,8 +37,11 @@ app.use("mypeople/bot_data", express.static(__dirname + '/bot_data'));
 
 // POST /callback - 마이피플 콜백 주소
 app.post("/callback", mypeople.callback );
+app.get('/live', mypeople.live);
 
 app.use("/styles", express.static(__dirname + '/public/styles'));
-http.createServer(app).listen(app.get('port'), function(){
+
+var server = http.createServer(app).listen(app.get('port'), function(){
   console.log("Express server listening on port " + app.get('port'));
 });
+

@@ -1,5 +1,41 @@
 var receiver = require("../mypeople/receiver");
 
+
+var io = require('socket.io').listen(3001);
+
+io.set('log level', 1);
+
+// Search query
+// exports.console = function(msg, calback) {
+
+// 	io.sockets.on('connection', function(socket) {
+// 		console.log("console s");
+// 		socket.emit('cmd', { console: 'world' });
+// 	});
+// 	console.log(msg);
+// }
+
+
+// // Websocket Server
+// io.sockets.on('connection', function(socket) {
+
+// 	console.log('Page client connected'); 
+//   	socket.emit('cmd', { console: 'world' });
+// 	socket.on('cmd', function(data) {
+// 		data.console = data.console + "OK";
+// 		socket.emit('cmd', data);
+// 	});
+
+
+// });
+
+
+exports.live = function(req, res){
+ 	res.render('live', { title: '마이피플 봇 라이브 예제' });
+};
+
+
+
 // 알림 콜백 예제
 
 // ----------------------------------------------------------
@@ -72,6 +108,18 @@ var receiver = require("../mypeople/receiver");
 exports.callback = function(req, res, options){
 
 	var params = eval(req.body);
+
+	// console.log("test");
+	io.sockets.on('connection', function(socket) {
+		console.log("S IO");
+		socket.emit('cmd', { console: 'POST' });
+
+		sockets.on('cmd', function(socket) {
+			console.log("S IO");
+			socket.emit('cmd', { console: 'POST' });
+		});
+
+	});
 
 	// 파라미터 출력
 	console.log('\nPOST /callback\n',params,'\n');
